@@ -15,6 +15,23 @@ useful for analysis: the original absolute location is replaced and is not
 stored in the relocated file, so it cannot be reverse engineered from the
 relocated log alone.
 
+## Visual Example
+
+The original log below contains a flight path near Trujillo, Extremadura,
+Spain. After relocation, the same path shape appears near Mount Abu, Rajasthan,
+India.
+
+Original log:
+
+![Original flight path near Trujillo, Extremadura, Spain](images/original-1.png)
+
+Relocated log:
+
+![Relocated flight path near Mount Abu, Rajasthan, India](images/relocated-1.png)
+
+The loop shape and relative movement are preserved, while the original absolute
+location is removed from the shared log.
+
 ## Requirements
 
 - Python 3.10 or newer
