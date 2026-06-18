@@ -16,7 +16,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-
 # PX4 ULog files start with this fixed byte signature. Checking it lets us fail
 # early if a user accidentally passes a non-ULog file.
 ULOG_MAGIC = b"ULog\x01\x12\x35"
@@ -432,9 +431,7 @@ def _relocate_lat_lon(latitude_deg: float, longitude_deg: float, anchor: Anchor)
     d_east = math.radians(longitude_deg - anchor.longitude_deg) * EARTH_RADIUS_M * math.cos(anchor_lat_rad)
     dest_lat = ORIGIN["latitude_deg"] + math.degrees(d_north / EARTH_RADIUS_M)
     dest_lat_rad = math.radians(dest_lat)
-    dest_lon = ORIGIN["longitude_deg"] + math.degrees(
-        d_east / (EARTH_RADIUS_M * max(math.cos(dest_lat_rad), 1e-9))
-    )
+    dest_lon = ORIGIN["longitude_deg"] + math.degrees(d_east / (EARTH_RADIUS_M * max(math.cos(dest_lat_rad), 1e-9)))
     return dest_lat, dest_lon
 
 
@@ -497,12 +494,8 @@ def relocate_px4_ulog(input_path: Path, output_path: Path, report_path: Path | N
 
         pair_changed = False
         for pair in pairs:
-            lat_value = _scaled_coordinate(
-                _read_scalar(relocated, payload_offset, pair.lat_field), pair.lat_field
-            )
-            lon_value = _scaled_coordinate(
-                _read_scalar(relocated, payload_offset, pair.lon_field), pair.lon_field
-            )
+            lat_value = _scaled_coordinate(_read_scalar(relocated, payload_offset, pair.lat_field), pair.lat_field)
+            lon_value = _scaled_coordinate(_read_scalar(relocated, payload_offset, pair.lon_field), pair.lon_field)
             if not _valid_lat_lon(lat_value, lon_value):
                 continue
             new_lat, new_lon = _relocate_lat_lon(float(lat_value), float(lon_value), anchor)

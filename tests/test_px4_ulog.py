@@ -91,9 +91,7 @@ class Px4LogRelocationTests(unittest.TestCase):
     def test_parse_format_definition_handles_type_arrays(self) -> None:
         """PX4 format parsing should account for array fields when computing offsets."""
 
-        layout = parse_format_definition(
-            "sensor_gps:uint64_t timestamp;int32_t lat;int32_t lon;uint8_t[4] _padding0;"
-        )
+        layout = parse_format_definition("sensor_gps:uint64_t timestamp;int32_t lat;int32_t lon;uint8_t[4] _padding0;")
 
         self.assertIsNotNone(layout)
         assert layout is not None

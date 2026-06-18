@@ -6,7 +6,6 @@ import sys
 import unittest
 from pathlib import Path
 
-
 # Tests intentionally build tiny synthetic logs instead of storing sample flight
 # logs in the repository. That keeps the test fixtures small and avoids carrying
 # any real location data in an open-source repo.
@@ -17,8 +16,8 @@ if str(GPS_RELOCATION_ROOT) not in sys.path:
 TEST_TEMP_ROOT = REPO_ROOT / "pytest-cache-files-ardupilot-relocation"
 
 from relocate_ardupilot_bin import (
-    ORIGIN,
     DATAFLASH_MAGIC,
+    ORIGIN,
     default_relocated_path,
     parse_dataflash_format,
     relocate_ardupilot_bin,

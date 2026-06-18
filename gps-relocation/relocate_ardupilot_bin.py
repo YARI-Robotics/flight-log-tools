@@ -16,7 +16,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
 
-
 # ArduPilot DataFlash binary messages start with this two-byte marker. The
 # parser uses it to find message boundaries and to reject non-DataFlash files.
 DATAFLASH_MAGIC = b"\xa3\x95"
@@ -378,9 +377,7 @@ def _relocate_lat_lon(latitude_deg: float, longitude_deg: float, anchor: Anchor)
     d_east = math.radians(longitude_deg - anchor.longitude_deg) * EARTH_RADIUS_M * math.cos(anchor_lat_rad)
     dest_lat = ORIGIN["latitude_deg"] + math.degrees(d_north / EARTH_RADIUS_M)
     dest_lat_rad = math.radians(dest_lat)
-    dest_lon = ORIGIN["longitude_deg"] + math.degrees(
-        d_east / (EARTH_RADIUS_M * max(math.cos(dest_lat_rad), 1e-9))
-    )
+    dest_lon = ORIGIN["longitude_deg"] + math.degrees(d_east / (EARTH_RADIUS_M * max(math.cos(dest_lat_rad), 1e-9)))
     return dest_lat, dest_lon
 
 
@@ -488,9 +485,7 @@ def relocate_ardupilot_bin(
         "relocated_bounds": bounds,
         "changed_fields": changed_fields,
         "skipped_topics": skipped_topics,
-        "defined_coordinate_topics": sorted(
-            fmt.name for fmt in formats.values() if _coordinate_pairs(fmt)
-        ),
+        "defined_coordinate_topics": sorted(fmt.name for fmt in formats.values() if _coordinate_pairs(fmt)),
         "topic_count": len(changed_fields),
     }
 
@@ -504,7 +499,9 @@ def build_arg_parser() -> argparse.ArgumentParser:
     """Build the command-line interface for the standalone script."""
 
     parser = argparse.ArgumentParser(
-        description="Relocate absolute GPS/global coordinates in an ArduPilot DataFlash log to the default synthetic origin."
+        description=(
+            "Relocate absolute GPS/global coordinates in an ArduPilot DataFlash log to the default synthetic origin."
+        )
     )
     parser.add_argument("input", type=Path, help="Input ArduPilot .bin/.BIN DataFlash file.")
     parser.add_argument(
